@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Мой домашний сервис</string>
-    <string name="login">Вход</string>
+    <string name="log_in">Вход</string>
+    <string name="password">Пароль</string>
+    <string name="login">Логин</string>
 </resources>
