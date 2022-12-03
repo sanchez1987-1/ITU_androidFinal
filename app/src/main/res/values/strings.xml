@@ -1,8 +1,8 @@
 <resources>
     <string name="app_name">MyHousingServices</string>
-    <string name="password" >Password</string>
-    <string name="log_in" >Log in</string>
-    <string name="login" >Username</string>
+    <string name="password">Password</string>
+    <string name="log_in">Log in</string>
+    <string name="login">Username</string>
     <string name="title_activity_tickets">activity_tickets</string>
     <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">First Fragment</string>

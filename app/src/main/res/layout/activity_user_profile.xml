@@ -41,7 +41,6 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:inputType="textPersonName"
-            android:text="ФИО"
             tools:layout_editor_absoluteX="100dp"
             tools:layout_editor_absoluteY="259dp" />
 

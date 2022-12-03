@@ -8,7 +8,6 @@ import android.util.Log
 import android.view.Gravity
 import android.widget.Toast
 import ru.myhousingservice.myservices.databinding.ActivityLoginBinding
-import ru.myhousingservice.myservices.databinding.ActivityMainBinding
 
 /********************************************************************************************************
  * Активность для ввода учётных данных.                                                                 *

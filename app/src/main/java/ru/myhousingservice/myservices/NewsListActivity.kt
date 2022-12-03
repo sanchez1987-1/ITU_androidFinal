@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import ru.myhousingservice.myservices.databinding.ActivityNewsListBinding
-import ru.myhousingservice.myservices.databinding.ActivityUserProfileBinding
 
 class NewsListActivity : AppCompatActivity() {
     private lateinit var binding            : ActivityNewsListBinding
@@ -35,8 +34,8 @@ class NewsListActivity : AppCompatActivity() {
                 startActivity(intent)
             }
             R.id.tickets -> {
-                val intent = Intent(this, TicketsActivity::class.java)
-                startActivity(intent)
+//                val intent = Intent(this, TicketsActivity::class.java)
+//                startActivity(intent)
             }
         }
         return super.onOptionsItemSelected(item)

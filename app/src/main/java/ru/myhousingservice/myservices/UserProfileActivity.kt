@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import ru.myhousingservice.myservices.databinding.ActivityMainBinding
 import ru.myhousingservice.myservices.databinding.ActivityUserProfileBinding
 
 class UserProfileActivity : AppCompatActivity() {
@@ -35,8 +34,8 @@ class UserProfileActivity : AppCompatActivity() {
                 startActivity(intent)
             }
             R.id.tickets -> {
-                val intent = Intent(this, TicketsActivity::class.java)
-                startActivity(intent)
+//                val intent = Intent(this, TicketsActivity::class.java)
+//                startActivity(intent)
             }
         }
         return super.onOptionsItemSelected(item)

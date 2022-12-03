@@ -1,34 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/teal_700"
+    android:orientation="vertical"
     tools:context=".NewsItemActivity">
 
     <TextView
         android:id="@+id/textDate"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Дата"
-        tools:layout_editor_absoluteX="29dp"
-        tools:layout_editor_absoluteY="77dp" />
+        android:layout_height="44dp"
+        android:text="Дата" />
 
     <TextView
         android:id="@+id/textHeader"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Заголовок новости"
-        tools:layout_editor_absoluteX="30dp"
-        tools:layout_editor_absoluteY="120dp" />
+        android:layout_height="47dp"
+        android:text="Заголовок новости" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline2"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_begin="171dp" />
+        android:layout_height="wrap_content" />
 
     <TextView
         android:id="@+id/textBody"
@@ -36,8 +31,6 @@
         android:layout_height="408dp"
         android:background="@color/white"
         android:scrollbarStyle="insideOverlay"
-        android:text="Текст новости"
-        tools:layout_editor_absoluteX="33dp"
-        tools:layout_editor_absoluteY="209dp" />
+        android:text="Текст новости" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>

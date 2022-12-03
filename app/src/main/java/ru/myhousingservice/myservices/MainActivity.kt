@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import ru.myhousingservice.myservices.databinding.ActivityLoginBinding
 import ru.myhousingservice.myservices.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
@@ -35,7 +34,7 @@ class MainActivity : AppCompatActivity() {
                 startActivity(intent)
             }
             R.id.tickets -> {
-                val intent = Intent(this, TicketsActivity::class.java)
+                val intent = Intent(this, TicketsListActivity::class.java)
                 startActivity(intent)
             }
         }
