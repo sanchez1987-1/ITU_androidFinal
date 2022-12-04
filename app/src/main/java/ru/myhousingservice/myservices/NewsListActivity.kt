@@ -5,14 +5,17 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
+import ru.myhousingservice.myservices.databinding.ActivityListBinding
 import ru.myhousingservice.myservices.databinding.ActivityNewsListBinding
 import ru.myhousingservice.myservices.databinding.ActivityUserProfileBinding
 
 /********************************************************************************************************
  * Активность с отображением списка объектов на карте.                                                  *
  *******************************************************************************************************/
-class NewsListActivity : AppCompatActivity() {
+class NewsListActivity : AppCompatActivity(),
+    CRecyclerViewAdapterObjects.IItemClickListener {
     //Объект класса, содержащий сылки на управляющие графические элементы интерфейса пользователя.
     private lateinit var binding : ActivityNewsListBinding
 
@@ -35,7 +38,11 @@ class NewsListActivity : AppCompatActivity() {
         items.add(CObject("Усьвинские столбы", "Известняковый массив высотой 120 метров протянулся на километры по правому берегу Усьвы. Как туристический объект интересует скалолазов, спелеологов и любителей археологии. Здесь множество пещер и гротов, причем регулярно открываются новые: скала довольно сложна для восхождения и не вся обследована. Отдельная достопримечательность — Чертов Палец, вертикальный скальный выступ высотой 70 метров."))
 
         binding.rvObjects.layoutManager          = LinearLayoutManager(this)
-        binding.rvObjects.adapter                = CRecyclerViewAdapterObjects(items)
+        binding.rvObjects.adapter                = CRecyclerViewAdapterObjects(items, this)
+    }
+
+    override fun onItemClick(index: Int, item: CObject) {
+        Toast.makeText(this, "Клик на элемент ${item.name} с порядковым номером $index", Toast.LENGTH_SHORT).show()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
