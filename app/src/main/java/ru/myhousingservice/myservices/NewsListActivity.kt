@@ -34,8 +34,8 @@ class NewsListActivity : AppCompatActivity() {
                 startActivity(intent)
             }
             R.id.tickets -> {
-//                val intent = Intent(this, TicketsActivity::class.java)
-//                startActivity(intent)
+                val intent = Intent(this, TicketsListActivity::class.java)
+                startActivity(intent)
             }
         }
         return super.onOptionsItemSelected(item)
