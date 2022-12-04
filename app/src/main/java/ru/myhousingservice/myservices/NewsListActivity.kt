@@ -1,11 +1,14 @@
 package ru.myhousingservice.myservices
 
+import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.recyclerview.widget.LinearLayoutManager
 import ru.myhousingservice.myservices.databinding.ActivityListBinding
 import ru.myhousingservice.myservices.databinding.ActivityNewsListBinding
@@ -14,10 +17,12 @@ import ru.myhousingservice.myservices.databinding.ActivityUserProfileBinding
 /********************************************************************************************************
  * Активность с отображением списка объектов на карте.                                                  *
  *******************************************************************************************************/
-class NewsListActivity : AppCompatActivity(),
-    CRecyclerViewAdapterObjects.IItemClickListener {
+class NewsListActivity                      : AppCompatActivity()
+{
+    private lateinit var resultLauncher     : ActivityResultLauncher<Intent>
+
     //Объект класса, содержащий сылки на управляющие графические элементы интерфейса пользователя.
-    private lateinit var binding : ActivityNewsListBinding
+    private lateinit var binding            : ActivityNewsListBinding
 
     /****************************************************************************************************
      * Обработка события создания объекта активности.                                                   *
@@ -25,7 +30,7 @@ class NewsListActivity : AppCompatActivity(),
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         //Связываем код актиности с файлом, описывающим внешний вид активности.
-        binding = ActivityNewsListBinding.inflate(layoutInflater)
+        binding                             = ActivityNewsListBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         //Тестовый список объектов, которые будт выводится пользователю.
@@ -37,37 +42,40 @@ class NewsListActivity : AppCompatActivity(),
         items.add(CObject("Хохловка", "Здесь находятся свезенные со всего края 23 объекта деревянного зодчества, расположившиеся на 35 гектарах музея под открытым небом у берега Камы. Внутри самих строений открыты выставки предметов местных ремесел и творчества, восстановлены интерьеры эпох, к которым относятся здания."))
         items.add(CObject("Усьвинские столбы", "Известняковый массив высотой 120 метров протянулся на километры по правому берегу Усьвы. Как туристический объект интересует скалолазов, спелеологов и любителей археологии. Здесь множество пещер и гротов, причем регулярно открываются новые: скала довольно сложна для восхождения и не вся обследована. Отдельная достопримечательность — Чертов Палец, вертикальный скальный выступ высотой 70 метров."))
 
-        binding.rvObjects.layoutManager          = LinearLayoutManager(this)
-        binding.rvObjects.adapter                = CRecyclerViewAdapterObjects(items, this)
-    }
+        binding.rvObjects.layoutManager     = LinearLayoutManager(this)
+        binding.rvObjects.adapter           = CRecyclerViewAdapterObjects(items) { index, item ->
+            //Вызовв активности с информацией по объекту, передача туда параметров.
+            val intent                      = Intent(this, CActivityObjectInfo::class.java)
+            intent.putExtra("KEY_INDEX", index)
+            intent.putExtra("KEY_OBJECT_NAME", item.name)
+            resultLauncher.launch(intent)
+        }
 
-    override fun onItemClick(index: Int, item: CObject) {
-        Toast.makeText(this, "Клик на элемент ${item.name} с порядковым номером $index", Toast.LENGTH_SHORT).show()
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        val inflater = menuInflater
-        inflater.inflate(R.menu.main_menu, menu)
-        return super.onCreateOptionsMenu(menu)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        binding = ActivityNewsListBinding.inflate(layoutInflater)
-
-        when (item.itemId) {
-            R.id.profile -> {
-                val intent = Intent(this, UserProfileActivity::class.java)
-                startActivity(intent)
-            }
-            R.id.news -> {
-                val intent = Intent(this, NewsListActivity::class.java)
-                startActivity(intent)
-            }
-            R.id.tickets -> {
-                val intent = Intent(this, TicketsListActivity::class.java)
-                startActivity(intent)
+        /************************************************************************************************
+         * Обработка события завершения активности с информацией по объекту.                            *
+         ***********************************************************************************************/
+        resultLauncher                      = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                //Получение параметров из дочерней активности
+                val data                    : Intent?
+                        = result.data
+                val name                    = data?.getStringExtra("KEY_OBJECT_NAME") ?: ""
+                val index                   = data?.getIntExtra("KEY_INDEX", -1)?: -1
+                //Если какие-то проблемы с данными, выводи сообщение или как-то обрабатываем.
+                if (index<0)
+                {
+                    //TODO Сообщение о проблеме в передаче данных
+                }
+                else
+                {
+                    //Если всё нормально,
+                    //актуализируем объект в списке данных.
+                    items[index].name       = name
+                    //Говорим адаптеру списка, что конкретная единица данных обновлена,
+                    //нужно повторно её вывести на экран.
+                    (binding.rvObjects.adapter as CRecyclerViewAdapterObjects).notifyItemChanged(index)
+                }
             }
         }
-        return super.onOptionsItemSelected(item)
     }
 }
