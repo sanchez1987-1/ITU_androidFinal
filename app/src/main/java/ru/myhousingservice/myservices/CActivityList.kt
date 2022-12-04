@@ -1,11 +1,24 @@
 package ru.myhousingservice.myservices
 
+import android.Manifest
 import android.app.Activity
 import android.content.Intent
+import android.content.SharedPreferences
+import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Environment
+import android.util.Log
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
+import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
+import androidx.preference.Preference
+import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import ru.myhousingservice.myservices.adapter.CRecyclerViewAdapterObjects
 import ru.myhousingservice.myservices.databinding.ActivityListBinding
@@ -18,9 +31,15 @@ class CActivityList                         : AppCompatActivity()
 {
     private lateinit var resultLauncherObjectEdit : ActivityResultLauncher<Intent>
     private lateinit var resultLauncherObjectAdd : ActivityResultLauncher<Intent>
+    private lateinit var resultLauncherPermission : ActivityResultLauncher<Array<String>>
 
     //Объект класса, содержащий сылки на управляющие графические элементы интерфейса пользователя.
     private lateinit var binding            : ActivityListBinding
+
+    private var test = 0
+
+    //Ссылка а объект для работы с настройками приложения.
+    private lateinit var pref               : SharedPreferences
 
     /****************************************************************************************************
      * Обработка события создания объекта активности.                                                   *
@@ -31,8 +50,12 @@ class CActivityList                         : AppCompatActivity()
         binding                             = ActivityListBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        //Тестовый список объектов, которые будт выводится пользователю.
-        val items = mutableListOf<CObject>()
+        //Получаем ссылку на объект настроек, ассоциируем его с файлом.
+        pref                                = PreferenceManager.getDefaultSharedPreferences(applicationContext)
+
+
+        //Тестовый список объектов, которые будут выводится пользователю.
+        val items                           = mutableListOf<CObject>()
         items.add(CObject("Кунгу́рская ледяна́я пеще́ра", "Одна из крупнейших карстовых пещер в Европейской части России, седьмая в мире гипсовая пещера по протяжённости. Протяжённость пещеры по данным на 2021 год составляет около 8153 м, из них около 2 километров оборудовано для посещений туристами."))
         items.add(CObject("Белого́рский Свято-Никола́евский монасты́рь", "Мужской монастырь на Белой горе в Кунгурском районе Пермского края. Относится к Пермской епархии Русской православной церкви. За строгость устава эту обитель некогда называли Уральским Афономм."))
         items.add(CObject("Пермский краеведческий музей","Старейший и крупнейший музей Пермского края. Насчитывает 600 000 единиц хранения и включает более 50 коллекций регионального, российского и мирового значения, в числе объектов музея 22 памятника истории и культуры, из них 16 памятников федерального значения и 6 местного значения."))
@@ -60,8 +83,8 @@ class CActivityList                         : AppCompatActivity()
         )
 
         /************************************************************************************************
-         * Обработка события завершения активности с информацией по объекту в режиме редактирования
-         * существующего объекта.                            *
+         * Обработка события завершения активности с информацией по объекту в режиме редактирования     *
+         * существующего объекта.                                                                       *
          ***********************************************************************************************/
         resultLauncherObjectEdit            = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == Activity.RESULT_OK) {
@@ -113,5 +136,94 @@ class CActivityList                         : AppCompatActivity()
             val intent                      = Intent(this, CActivityObjectInfo::class.java)
             resultLauncherObjectAdd.launch(intent)
         }
+
+        // Register the permissions callback, which handles the user's response to the
+        // system permissions dialog. Save the return value, an instance of
+        // ActivityResultLauncher. You can use either a val, as shown in this snippet,
+        // or a lateinit var in your onAttach() or onCreate() method.
+        resultLauncherPermission            =
+            registerForActivityResult(
+                ActivityResultContracts.RequestMultiplePermissions()
+            ) { map: Map<String, Boolean> ->
+                if (map[Manifest.permission.ACCESS_FINE_LOCATION]==true) {
+                    // Permission is granted. Continue the action or workflow in your
+                    // app.
+                    test = 1
+                } else {
+                    // Explain to the user that the feature is unavailable because the
+                    // feature requires a permission that the user has denied. At the
+                    // same time, respect the user's decision. Don't link to system
+                    // settings in an effort to convince the user to change their
+                    // decision.
+                    test = 2
+                }
+            }
+        checkAndRequestPermissions()
+
+
+
+    }
+    /****************************************************************************************************
+     * Проверка наличия и запрос необходимых разрешений.                                                *
+     ***************************************************************************************************/
+    private fun checkAndRequestPermissions()
+    {
+        val allPermissions                  = listOf(
+            Manifest.permission.ACCESS_FINE_LOCATION,
+            Manifest.permission.ACCESS_COARSE_LOCATION,
+            Manifest.permission.READ_EXTERNAL_STORAGE,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE,
+            Manifest.permission.CAMERA
+        )
+        val permissionsToAsk                = allPermissions
+            .filter {
+                return@filter ContextCompat.checkSelfPermission(
+                    this,
+                    it
+                ) == PackageManager.PERMISSION_DENIED
+            }
+        if (permissionsToAsk.isNotEmpty())
+            resultLauncherPermission.launch(
+                permissionsToAsk.toTypedArray()
+            )
+    }
+    /****************************************************************************************************
+     * Привязка файла с описанием структуры меню к данной активности при создании активности.           *
+     ***************************************************************************************************/
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        val inflater: MenuInflater = menuInflater
+        inflater.inflate(R.menu.menu_activity_list, menu)
+        return true
+    }
+    /****************************************************************************************************
+     * Обработка нажатия на элементы меню.                                                              *
+     ***************************************************************************************************/
+    override fun onOptionsItemSelected(
+        item                                : MenuItem
+    )                                       : Boolean
+    {
+        return when (item.itemId) {
+            R.id.miLogout -> {
+                doLogout()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+    /****************************************************************************************************
+     * Обработка нажатия кнопки "Выход из учётной записи" в меню.                                       *
+     ***************************************************************************************************/
+    private fun doLogout()
+    {
+        //Сохраняем в файл с настройками приложения факт отсутствия учётной записи.
+        with (pref.edit()) {
+            putString(getString(R.string.KEY_USER_NAME), "")
+            apply()
+        }
+        //Закрываем данную активность.
+        finish()
+        //Опционально можем вызвать активность ввода учётных данных.
+        val intent                  = Intent(this, LoginActivity::class.java)
+        startActivity(intent)
     }
 }

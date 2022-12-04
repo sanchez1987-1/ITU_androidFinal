@@ -1,15 +1,13 @@
 <resources>
     <string name="app_name">MyHousingServices</string>
-    <string name="password">Password</string>
-    <string name="log_in">Log in</string>
-    <string name="login">Username</string>
-    <string name="title_activity_tickets">activity_tickets</string>
-    <!-- Strings used for fragments for navigation -->
-    <string name="first_fragment_label">First Fragment</string>
-    <string name="second_fragment_label">Second Fragment</string>
-    <string name="next">Next</string>
-    <string name="previous">Previous</string>
-
-    <string name="hello_first_fragment">Hello first fragment</string>
-    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+    <string name="About">About</string>
+    <string name="Add">Add</string>
+    <string name="Close">Close</string>
+    <string name="AddObject">Add object</string>
+    <string name="name">Name</string>
+    <string name="KEY_USER_NAME" translatable="false">KEY_USER_NAME</string>
+    <string name="login">login</string>
+    <string name="password">password</string>
+    <string name="log_in">log in</string>
+    <string name="Logout">Logout</string>
 </resources>
