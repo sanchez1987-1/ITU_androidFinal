@@ -1,10 +1,10 @@
-package ru.myhousingservice.myservices
+package ru.myhousingservice.myservices.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import ru.myhousingservice.myservices.databinding.RecyclerviewobjectsItemBinding
-import ru.myhousingservice.myservices.CObject
+import ru.myhousingservice.myservices.model.CObject
 
 /********************************************************************************************************
  * Класс адаптер для списка элементов. Содержит логику выбора элементов, логику вывода информации       *
@@ -18,10 +18,13 @@ class CRecyclerViewAdapterObjects
 /********************************************************************************************************
  * Конструктор.                                                                                         *
  * @param items - список элементов данных, информацию по которым нужноо выводить на экран.              *
+ * @param onItemClickListener - обработчик кликов на элементы списка.                                   *
+ * @param onItemRemoveListener - обработчик кликов на кнопку "удалить" элементов списка.                *
  *******************************************************************************************************/
     (
     private val items                       : MutableList<CObject>,
-    private val listener                    : (Int, CObject) -> Unit
+    private val onItemClickListener         : (Int, CObject) -> Unit,
+    private val onItemRemoveListener        : (Int, CObject) -> Unit
 )                                           : RecyclerView.Adapter<CRecyclerViewAdapterObjects.CViewHolderObject>()
 {
     /****************************************************************************************************
@@ -31,18 +34,25 @@ class CRecyclerViewAdapterObjects
     /****************************************************************************************************
      * Конструктор.                                                                                     *
      * @param binding - объект, хранящий ссылки на элементы интерфейса, у которых указан идентификатор. *
+     * @param onItemClickListener - обработчик кликов на элемент списка.                                *
+     * @param onItemRemoveListener - обработчик кликов на кнопку "удалить" элемента списка.             *
      ***************************************************************************************************/
         (
         private val binding                 : RecyclerviewobjectsItemBinding,
-        private val listener                : (Int, CObject) -> Unit
+        private val onItemClickListener     : (Int, CObject) -> Unit,
+        private val onItemRemoveListener    : (Int, CObject) -> Unit
     )                                       : RecyclerView.ViewHolder(binding.root)
     {
+        //Элемент данных, который отображается в текущем элементе списка.
         private lateinit var item           : CObject
-        private var index                   : Int = -1
-
         init{
+            //Обработка клика на все поля элемента, кроме кнопки с корзиной.
             binding.linearLayoutObject.setOnClickListener {
-                listener(index, item)
+                onItemClickListener(items.indexOf(item), item)
+            }
+            //Обработка клика на кнопку с корзиной
+            binding.buttonRemove.setOnClickListener {
+                onItemRemoveListener(items.indexOf(item), item)
             }
         }
 
@@ -51,11 +61,9 @@ class CRecyclerViewAdapterObjects
          * @param newItem - элемент данных для вывода.                                                  *
          ***********************************************************************************************/
         fun bind(
-            newItem                         : CObject,
-            position                        : Int
+            newItem                         : CObject
         )
         {
-            index                           = position
             item                            = newItem
             binding.textViewName.text       = newItem.name
             binding.textViewDescription.text= newItem.description
@@ -69,7 +77,11 @@ class CRecyclerViewAdapterObjects
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CViewHolderObject {
         val binding                         = RecyclerviewobjectsItemBinding.inflate(
             LayoutInflater.from(parent.context),parent,false)
-        return CViewHolderObject(binding, listener)
+        return CViewHolderObject(
+            binding,
+            onItemClickListener,
+            onItemRemoveListener
+        )
     }
 
     /****************************************************************************************************
@@ -79,7 +91,7 @@ class CRecyclerViewAdapterObjects
      * @param position - порядковый номер элемента данных в списке.                                     *
      ***************************************************************************************************/
     override fun onBindViewHolder(holder: CViewHolderObject, position: Int) {
-        holder.bind(items[position], position)
+        holder.bind(items[position])
     }
     /****************************************************************************************************
      * Возвращает актуальное количество элементов в списке.                                             *

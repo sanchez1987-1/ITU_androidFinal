@@ -7,6 +7,7 @@ import android.view.Menu
 import android.view.MenuItem
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import ru.myhousingservice.myservices.adapter.TicketsAdapter
 import ru.myhousingservice.myservices.databinding.ActivityTicketsListBinding
 
 class TicketsListActivity : AppCompatActivity() {

@@ -1,10 +1,11 @@
-package ru.myhousingservice.myservices
+package ru.myhousingservice.myservices.adapter
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import ru.myhousingservice.myservices.R
 
 class TicketsAdapter(private val names: List<String>) :
     RecyclerView.Adapter<TicketsAdapter.ViewHolder>() {

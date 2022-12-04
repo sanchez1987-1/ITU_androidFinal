@@ -3,7 +3,6 @@ package ru.myhousingservice.myservices
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import ru.myhousingservice.myservices.databinding.ActivityObjectInfoBinding
 
@@ -27,13 +26,30 @@ class CActivityObjectInfo                   : AppCompatActivity()
         binding                             = ActivityObjectInfoBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        //Пример кода проверки наличия параметров без использования синтаксиса языка Kotlin.
+//        val extr = intent.extras
+//        if ( extr==null)
+//        {
+//            index = -1
+//            binding.inputName.editText!!.setText("")
+//        }
+//        else
+//        {
+//            index = extr.getInt("KEY_INDEX")
+//            //Вывод наименования объекта на экран.
+//            binding.inputName.editText!!.setText(intent.extras!!.getString("KEY_OBJECT_NAME")?: "")
+//        }
+
         //Получение переданных параметров
         intent.extras?.let{
-            index = it.getInt("KEY_INDEX")
+            index                           = it.getInt("KEY_INDEX")
             //Вывод наименования объекта на экран.
             binding.inputName.editText!!.setText(it.getString("KEY_OBJECT_NAME")?: "")
-        }?:run{
-            Toast.makeText(this, "Параметры недоступны!", Toast.LENGTH_SHORT).show()
+        }?:
+        //Этот кусок кода выполняется, если intent.extras==null (т.е. параметры не переданы).
+        run{
+            index                           = -1
+            binding.inputName.editText!!.setText("")
         }
 
         /************************************************************************************************

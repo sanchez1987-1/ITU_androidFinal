@@ -1,4 +1,4 @@
-package ru.myhousingservice.myservices
+package ru.myhousingservice.myservices.model
 
 class CObject(
     var name : String,
