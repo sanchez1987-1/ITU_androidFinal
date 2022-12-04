@@ -1,20 +1,20 @@
 package ru.myhousingservice.myservices
 
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuItem
 import androidx.recyclerview.widget.LinearLayoutManager
-import ru.myhousingservice.myservices.databinding.ActivityNewsListBinding
-import ru.myhousingservice.myservices.databinding.ActivityUserProfileBinding
+import androidx.recyclerview.widget.RecyclerView
+import ru.myhousingservice.myservices.R
+import ru.myhousingservice.myservices.CRecyclerViewAdapterObjects
+import ru.myhousingservice.myservices.databinding.ActivityListBinding
+import ru.myhousingservice.myservices.CObject
 
 /********************************************************************************************************
  * Активность с отображением списка объектов на карте.                                                  *
  *******************************************************************************************************/
-class NewsListActivity : AppCompatActivity() {
+class CActivityList : AppCompatActivity() {
     //Объект класса, содержащий сылки на управляющие графические элементы интерфейса пользователя.
-    private lateinit var binding : ActivityNewsListBinding
+    private lateinit var binding : ActivityListBinding
 
     /****************************************************************************************************
      * Обработка события создания объекта активности.                                                   *
@@ -22,7 +22,7 @@ class NewsListActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         //Связываем код актиности с файлом, описывающим внешний вид активности.
-        binding = ActivityNewsListBinding.inflate(layoutInflater)
+        binding = ActivityListBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         //Тестовый список объектов, которые будт выводится пользователю.
@@ -36,31 +36,5 @@ class NewsListActivity : AppCompatActivity() {
 
         binding.rvObjects.layoutManager          = LinearLayoutManager(this)
         binding.rvObjects.adapter                = CRecyclerViewAdapterObjects(items)
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        val inflater = menuInflater
-        inflater.inflate(R.menu.main_menu, menu)
-        return super.onCreateOptionsMenu(menu)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        binding = ActivityNewsListBinding.inflate(layoutInflater)
-
-        when (item.itemId) {
-            R.id.profile -> {
-                val intent = Intent(this, UserProfileActivity::class.java)
-                startActivity(intent)
-            }
-            R.id.news -> {
-                val intent = Intent(this, NewsListActivity::class.java)
-                startActivity(intent)
-            }
-            R.id.tickets -> {
-                val intent = Intent(this, TicketsListActivity::class.java)
-                startActivity(intent)
-            }
-        }
-        return super.onOptionsItemSelected(item)
     }
 }

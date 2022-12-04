@@ -1,55 +1,29 @@
 package ru.myhousingservice.myservices
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import ru.myhousingservice.myservices.databinding.ActivityTicketsListItemBinding
 
-/********************************************************************************************************
- * Класс адаптер для списка элементов. Содержит логику выбора элементов, логику вывода информации       *
- * об элементе в строку списка.                                                                         *
- * @link https://developer.alexanderklimov.ru/android/views/recyclerview-kot.php                        *
- * @link https://medium.com/nuances-of-programming/kotlin-реализация-recyclerview-на-android-6c93981e9abf
- *******************************************************************************************************/
-class TicketsAdapter(private val items: MutableList<CObject>, private val listener: IItemClickListener) :
+class TicketsAdapter(private val names: List<String>) :
     RecyclerView.Adapter<TicketsAdapter.ViewHolder>() {
-    inner class ViewHolder(private val binding: ActivityTicketsListItemBinding, private val listener: IItemClickListener) :
-        RecyclerView.ViewHolder(binding.root) {
-        private lateinit var item           : CObject
-        private var index                   : Int = -1
-        init{
-            binding.linearLayoutObject.setOnClickListener {
-                listener.onItemClick(index, item)
-            }
-        }
-        fun bind(
-            newItem                         : CObject,
-            position                        : Int
-        )
-        {
-            index                           = position
-            item                            = newItem
-            binding.textViewName.text       = newItem.name
-            binding.textViewDescription.text= newItem.description
-        }
+
+    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        val largeTextView: TextView = itemView.findViewById(R.id.textViewLarge)
+        val smallTextView: TextView = itemView.findViewById(R.id.textViewSmall)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val binding                         = ActivityTicketsListItemBinding.inflate(
-            LayoutInflater.from(parent.context),parent,false)
-        return ViewHolder(binding, listener)
+        val itemView = LayoutInflater.from(parent.context)
+            .inflate(R.layout.activity_tickets_list_item, parent, false)
+        return ViewHolder(itemView)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(items[position], position)
+        holder.largeTextView.text = names[position]
+        holder.smallTextView.text = "кот"
     }
 
-    override fun getItemCount(): Int {
-        return items.size
-    }
-
-    interface IItemClickListener
-    {
-        fun onItemClick(index : Int, item : CObject)
-    }
+    override fun getItemCount() = names.size
 }
