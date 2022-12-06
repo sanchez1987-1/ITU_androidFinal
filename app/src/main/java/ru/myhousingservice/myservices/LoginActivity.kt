@@ -38,7 +38,7 @@ class LoginActivity : AppCompatActivity() {
         if (userName!="")
         {
             //Вызов активности со списком.
-            val intent = Intent(this, CActivityList::class.java)
+            val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
             //Закрываем текущую активность, чтобы на неё нельзя было вернуться кнопкой "назад".
             finish()

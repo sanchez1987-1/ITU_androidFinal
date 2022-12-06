@@ -1,12 +1,14 @@
-package ru.myhousingservice.myservices.room
+package ru.myhousingservice.myservices.utils.room
 
 import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import ru.myhousingservice.myservices.dao.IDAOObjects
+import ru.myhousingservice.myservices.dao.IDAOTickets
 import ru.myhousingservice.myservices.model.CComment
 import ru.myhousingservice.myservices.model.CObject
+import ru.myhousingservice.myservices.model.CTickets
 
 /********************************************************************************************************
  * Класс для работы с БД.                                                                               *
@@ -16,6 +18,7 @@ import ru.myhousingservice.myservices.model.CObject
     //Список сущностей, которые будут храниться в БД.
     entities                                = [
         CObject::class,
+        CTickets::class,
         CComment::class
     ],
     version                                 = 1,
@@ -26,6 +29,7 @@ abstract class CDatabase                    : RoomDatabase() {
      * Класс для доступа к данным объектов в БД.                                                        *
      ***************************************************************************************************/
     abstract fun daoObjects()               : IDAOObjects
+    abstract fun daoTickets()               : IDAOTickets
 
 
     companion object {

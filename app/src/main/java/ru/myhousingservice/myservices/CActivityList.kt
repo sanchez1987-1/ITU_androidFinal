@@ -9,6 +9,7 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
+import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
@@ -27,7 +28,8 @@ import ru.myhousingservice.myservices.viewmodels.CViewModelFactory
 /********************************************************************************************************
  * Активность с отображением списка объектов на карте.                                                  *
  *******************************************************************************************************/
-class CActivityList                         : AppCompatActivity() {
+class CActivityList                         : AppCompatActivity()
+{
     private lateinit var resultLauncherPermission
             : ActivityResultLauncher<Array<String>>
 
@@ -121,10 +123,26 @@ class CActivityList                         : AppCompatActivity() {
                     test = 2
                 }
             }
+        //Вызываем обновление объектов с сервера.
+        viewModel.getObjectsFromServer()
+        /************************************************************************************************
+         * Обработка изменений статуса загрузки данных с сервера.                                       *
+         ***********************************************************************************************/
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.status.collect { newStatus ->
+                    if (newStatus.isEmpty())
+                        return@collect //Пропускаем пустой начальный статус
+                    //Показываем статусное сообщение.
+                    Toast.makeText(
+                        this@CActivityList,
+                        newStatus,
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
+        }
         checkAndRequestPermissions()
-
-
-
     }
     /****************************************************************************************************
      * Проверка наличия и запрос необходимых разрешений.                                                *

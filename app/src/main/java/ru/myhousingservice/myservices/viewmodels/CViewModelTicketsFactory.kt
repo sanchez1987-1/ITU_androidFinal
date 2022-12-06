@@ -2,24 +2,23 @@ package ru.myhousingservice.myservices.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import ru.myhousingservice.myservices.repositories.CRepositoryObjects
 import ru.myhousingservice.myservices.repositories.CRepositoryTickets
 
-class CViewModelFactory (
-    private val repositoryObjects           : CRepositoryObjects
+class CViewModelTicketsFactory (
+    private val repositoryTicket           : CRepositoryTickets
 )                                           : ViewModelProvider.Factory
 {
     override fun <T : ViewModel> create(
         modelClass: Class<T>
     )                                       : T
     {
-        if (modelClass.isAssignableFrom(CViewModelActivityList::class.java)) {
+        if (modelClass.isAssignableFrom(CViewModelTicketsList::class.java)) {
             @Suppress("UNCHECKED_CAST")
-            return CViewModelActivityList(repositoryObjects) as T
+            return CViewModelTicketsList(repositoryTicket) as T
         }
-        if (modelClass.isAssignableFrom(CViewModelObjectInfo::class.java)) {
+        if (modelClass.isAssignableFrom(CViewModelTicketsInfo::class.java)) {
             @Suppress("UNCHECKED_CAST")
-            return CViewModelObjectInfo(repositoryObjects) as T
+            return CViewModelTicketsInfo(repositoryTicket) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }

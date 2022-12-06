@@ -1,34 +1,34 @@
 package ru.myhousingservice.myservices.repositories
 
 import androidx.annotation.WorkerThread
-import ru.myhousingservice.myservices.dao.IDAOObjects
-import ru.myhousingservice.myservices.model.CObject
+import ru.myhousingservice.myservices.dao.IDAOTickets
+import ru.myhousingservice.myservices.model.CTickets
 import java.util.UUID
 import android.util.Log
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.onEach
-import ru.myhousingservice.myservices.utils.network.IServiceAPI
+import ru.myhousingservice.myservices.utils.network.ITicketsAPI
 
 /********************************************************************************************************
  * Репозиторий для работы с данными об объектах.                                                        *
  * @author Селетков И.П. 2022 1116.                                                                     *
  *******************************************************************************************************/
-class CRepositoryObjects(
-    private val daoObjects                  : IDAOObjects,
-    private val serviceAPI                  : IServiceAPI
+class CRepositoryTickets(
+    private val daoObjects                  : IDAOTickets,
+    private val ticketAPI                   : ITicketsAPI,
 )
 {
     /****************************************************************************************************
      * Получение списка всех элементов.                                                                 *
      ***************************************************************************************************/
-    fun getAll()                            : Flow<List<CObject>>
+    fun getAll()                            : Flow<List<CTickets>>
     {
         return daoObjects.getAllFlow()
     }
     suspend fun updateFromServer()          : String
     {
         return try{
-            serviceAPI.getObjectsOnMap()
+            ticketAPI.getObjectsOnMap()
                 .forEach { objectFromServer ->
                     daoObjects.getById(objectFromServer.id)?.let {
                         daoObjects.update(objectFromServer)
@@ -61,7 +61,7 @@ class CRepositoryObjects(
     @Suppress("RedundantSuspendModifier")
     @WorkerThread
     suspend fun insert(
-        item                                : CObject
+        item                                : CTickets
     ) {
         daoObjects.insertAll(item)
     }
@@ -71,7 +71,7 @@ class CRepositoryObjects(
      ***************************************************************************************************/
     @WorkerThread
     suspend fun delete(
-        item                            : CObject
+        item                            : CTickets
     ) {
         daoObjects.delete(item)
     }
@@ -80,7 +80,7 @@ class CRepositoryObjects(
      * @param item - объект для обновления.                                                             *
      ***************************************************************************************************/
     suspend fun update(
-        item                            : CObject
+        item                            : CTickets
     ) {
         daoObjects.update(item)
     }

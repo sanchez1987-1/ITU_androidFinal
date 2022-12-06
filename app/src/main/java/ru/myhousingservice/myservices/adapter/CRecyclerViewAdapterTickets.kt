@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import ru.myhousingservice.myservices.databinding.RecyclerviewobjectsItemBinding
-import ru.myhousingservice.myservices.model.CObject
+import ru.myhousingservice.myservices.model.CTickets
 
 /********************************************************************************************************
  * Класс адаптер для списка элементов. Содержит логику выбора элементов, логику вывода информации       *
@@ -18,21 +18,21 @@ import ru.myhousingservice.myservices.model.CObject
  * @link https://antonioleiva.com/recyclerview-adapter-kotlin/                                          *
  * @author Селетков И.П. 2022 1101.                                                                     *
  *******************************************************************************************************/
-class CRecyclerViewAdapterObjects
+class CRecyclerViewAdapterTickets
 /********************************************************************************************************
  * Конструктор.                                                                                         *
  * @param onItemClickListener - обработчик кликов на элементы списка.                                   *
  * @param onItemRemoveListener - обработчик кликов на кнопку "удалить" элементов списка.                *
  *******************************************************************************************************/
     (
-    private val onItemClickListener         : (CObject) -> Unit,
-    private val onItemRemoveListener        : (CObject) -> Unit
-)                                           : RecyclerView.Adapter<CRecyclerViewAdapterObjects.CViewHolderObject>()
+    private val onItemClickListener         : (CTickets) -> Unit,
+    private val onItemRemoveListener        : (CTickets) -> Unit
+)                                           : RecyclerView.Adapter<CRecyclerViewAdapterTickets.CTicketsHolderObject>()
 {
     /****************************************************************************************************
      * Вспомогательный класс, оотвечающий за визуальное отображение одного элемента данных.             *
      ***************************************************************************************************/
-    inner class CViewHolderObject
+    inner class CTicketsHolderObject
     /****************************************************************************************************
      * Конструктор.                                                                                     *
      * @param binding - объект, хранящий ссылки на элементы интерфейса, у которых указан идентификатор. *
@@ -41,12 +41,12 @@ class CRecyclerViewAdapterObjects
      ***************************************************************************************************/
         (
         private val binding                 : RecyclerviewobjectsItemBinding,
-        private val onItemClickListener     : (CObject) -> Unit,
-        private val onItemRemoveListener    : (CObject) -> Unit
+        private val onItemClickListener     : (CTickets) -> Unit,
+        private val onItemRemoveListener    : (CTickets) -> Unit
     )                                       : RecyclerView.ViewHolder(binding.root)
     {
         //Элемент данных, который отображается в текущем элементе списка.
-        private lateinit var item           : CObject
+        private lateinit var item           : CTickets
         init{
             //Обработка клика на все поля элемента, кроме кнопки с корзиной.
             binding.linearLayoutObject.setOnClickListener {
@@ -63,7 +63,7 @@ class CRecyclerViewAdapterObjects
          * @param newItem - элемент данных для вывода.                                                  *
          ***********************************************************************************************/
         fun bind(
-            newItem                         : CObject
+            newItem                         : CTickets
         )
         {
             item                            = newItem
@@ -76,10 +76,10 @@ class CRecyclerViewAdapterObjects
      * Указывает, какой файл с разметкой внешнего вида использовать.                                    *
      * @param parent - ссылка на родительский элемент - RecyclerView.                                   *
      ***************************************************************************************************/
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CViewHolderObject {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CTicketsHolderObject {
         val binding                         = RecyclerviewobjectsItemBinding.inflate(
             LayoutInflater.from(parent.context),parent,false)
-        return CViewHolderObject(
+        return CTicketsHolderObject(
             binding,
             onItemClickListener,
             onItemRemoveListener
@@ -92,7 +92,7 @@ class CRecyclerViewAdapterObjects
      * @param holder - строка списка с управляющими графическими элементами.                            *
      * @param position - порядковый номер элемента данных в списке.                                     *
      ***************************************************************************************************/
-    override fun onBindViewHolder(holder: CViewHolderObject, position: Int) {
+    override fun onBindViewHolder(holder: CTicketsHolderObject, position: Int) {
         holder.bind(differ.currentList[position])
     }
     /****************************************************************************************************
@@ -112,7 +112,7 @@ class CRecyclerViewAdapterObjects
      * @param items новый список элментов для отображения.                                              *
      ***************************************************************************************************/
     fun submitList(
-        items                               : List<CObject>
+        items                               : List<CTickets>
     ) //Ретранслирует вызов методу из объекта differ
             = differ.submitList(items)
     //Статическая часть класса,
@@ -123,13 +123,13 @@ class CRecyclerViewAdapterObjects
          * Анонимный объект, реализующий методы, необходимые для сравнения двух элементов.              *
          ***********************************************************************************************/
         private val differCallback          = object
-            : DiffUtil.ItemCallback<CObject>(){
-            override fun areItemsTheSame(oldItem: CObject, newItem: CObject): Boolean {
+            : DiffUtil.ItemCallback<CTickets>(){
+            override fun areItemsTheSame(oldItem: CTickets, newItem: CTickets): Boolean {
                 return  oldItem.id == newItem.id
             }
 
             @SuppressLint("DiffUtilEquals")
-            override fun areContentsTheSame(oldItem: CObject, newItem: CObject): Boolean {
+            override fun areContentsTheSame(oldItem: CTickets, newItem: CTickets): Boolean {
                 return oldItem == newItem
             }
 

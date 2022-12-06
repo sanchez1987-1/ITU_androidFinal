@@ -7,19 +7,19 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import ru.myhousingservice.myservices.model.CObject
-import ru.myhousingservice.myservices.repositories.CRepositoryObjects
+import ru.myhousingservice.myservices.model.CTickets
+import ru.myhousingservice.myservices.repositories.CRepositoryTickets
 
 /********************************************************************************************************
  * Модель представления (отображаемых данных и состояния) для активности списка объектов.               *
  *******************************************************************************************************/
-class CViewModelActivityList(
-    private val repositoryObject            : CRepositoryObjects
+class CViewModelTicketsList(
+    private val repositoryTicket            : CRepositoryTickets
 )                                           : ViewModel()
 {
     //Поток со списками всех объектов.
-    val allObjects                          : Flow<List<CObject>>
-            = repositoryObject.getAll()
+    val allObjects                          : Flow<List<CTickets>>
+            = repositoryTicket.getAll()
 
     //Статус загрузки данных с сервера
     private val _status                     = MutableStateFlow("")
@@ -34,7 +34,7 @@ class CViewModelActivityList(
         viewModelScope.launch(Dispatchers.IO) {
             //Вызываем метод загрузки из репозитория,
             //по результатам выполнения актуализируем статус.
-            _status.value                   = repositoryObject.updateFromServer()
+            _status.value                   = repositoryTicket.updateFromServer()
         }
     }
 
@@ -42,9 +42,9 @@ class CViewModelActivityList(
      * Удаление элемента из списка.                                                                 *
      ***********************************************************************************************/
     fun delete(
-        item                                : CObject
+        item                                : CTickets
     )                                       = viewModelScope.launch {
-        repositoryObject.delete(item)
+        repositoryTicket.delete(item)
     }
 
 

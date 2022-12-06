@@ -2,7 +2,7 @@ package ru.myhousingservice.myservices.dao
 
 import androidx.room.*
 import kotlinx.coroutines.flow.Flow
-import ru.myhousingservice.myservices.model.CObject
+import ru.myhousingservice.myservices.model.CTickets
 import java.util.*
 
 /********************************************************************************************************
@@ -10,12 +10,12 @@ import java.util.*
  * @author Селетков И.П. 2022 1116.                                                                     *
  *******************************************************************************************************/
 @Dao
-interface IDAOObjects {
+interface IDAOTickets {
     /****************************************************************************************************
      * Получение списка всех элементов.                                                                 *
      ***************************************************************************************************/
     @Query("SELECT * FROM objects")
-    fun getAllFlow()                        : Flow<List<CObject>>
+    fun getAllFlow()                        : Flow<List<CTickets>>
 
     /****************************************************************************************************
      * Запрос элемента по идентификатору.                                                               *
@@ -25,19 +25,19 @@ interface IDAOObjects {
     @Query("SELECT * FROM objects WHERE id=:id")
     fun getByIdFlow(
         id                                  : UUID
-    )                                       : Flow<CObject>
+    )                                       : Flow<CTickets>
 
     @Query("SELECT * FROM objects WHERE id=:id")
     fun getById(
         id                                  : UUID
-    )                                       : CObject?
+    )                                       : CTickets?
     /****************************************************************************************************
      * Сохранение нескольких новых элементов в БД.                                                      *
      * @param items - объект или объекты для сохранения.                                              *
      ***************************************************************************************************/
     @Insert
     suspend fun insertAll(
-        vararg items                      : CObject
+        vararg items                      : CTickets
     )
 
     /****************************************************************************************************
@@ -46,7 +46,7 @@ interface IDAOObjects {
      ***************************************************************************************************/
     @Update
     suspend fun update(
-        item                                : CObject
+        item                                : CTickets
     )
 
     /****************************************************************************************************
@@ -55,5 +55,5 @@ interface IDAOObjects {
      ***************************************************************************************************/
     @Delete
     suspend fun delete(
-        item                                : CObject)
+        item                                : CTickets)
 }

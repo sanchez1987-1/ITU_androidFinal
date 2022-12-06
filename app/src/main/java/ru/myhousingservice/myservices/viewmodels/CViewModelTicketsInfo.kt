@@ -6,15 +6,15 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.flow.SharingStarted.Companion.WhileSubscribed
 import kotlinx.coroutines.launch
-import ru.myhousingservice.myservices.model.CObject
-import ru.myhousingservice.myservices.repositories.CRepositoryObjects
+import ru.myhousingservice.myservices.model.CTickets
+import ru.myhousingservice.myservices.repositories.CRepositoryTickets
 import java.util.*
 
 /********************************************************************************************************
  * Модель представления (отображаемых данных и состояния) для активности редактирования объекта.        *
  *******************************************************************************************************/
-class CViewModelObjectInfo(
-    private val repositoryObject            : CRepositoryObjects
+class CViewModelTicketsInfo(
+    private val repositoryObject            : CRepositoryTickets
 )                                           : ViewModel()
 {
     //Переменная хранит идентификатор, который даёт активность из своих параметров.
@@ -22,13 +22,13 @@ class CViewModelObjectInfo(
     //Оформлена в виде потока, чтобы на изменение id можно было реагировать другим потоком.
     private val id                          = MutableStateFlow<UUID?>(null)
     //Переменная зранит поток, в котором будут передаваться значения элемента.
-    val item                                : StateFlow<CObject>
+    val item                                : StateFlow<CTickets>
 
             = id //Каждый раз при изменении id
         .flatMapLatest { value ->
             //Если id null - создаём поток из одного нового объекта
             if (value == null) {
-                flow{ CObject()}
+                flow{ CTickets()}
             } else {
                 //Если идентификатор нормальный, берём поток из БД
                 repositoryObject.getById(value)
@@ -38,7 +38,7 @@ class CViewModelObjectInfo(
         .stateIn(
             scope                       = viewModelScope,
             started                     = WhileSubscribed(5000),
-            initialValue                = CObject()
+            initialValue                = CTickets()
         )
 
 
