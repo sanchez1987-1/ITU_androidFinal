@@ -1,20 +1,19 @@
-package ru.myhousingservice.myservices
+package ru.myhousingservice.myservices.activity
 
 import android.content.Intent
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.preference.PreferenceManager
-import android.util.Log
-import android.view.Gravity
 import android.widget.Toast
+import ru.myhousingservice.myservices.R
 import ru.myhousingservice.myservices.databinding.ActivityLoginBinding
 
 /********************************************************************************************************
  * Активность для ввода учётных данных.                                                                 *
  *******************************************************************************************************/
 
-class LoginActivity : AppCompatActivity() {
+class CActivityLogin : AppCompatActivity() {
     //Ссылка а объект для работы с настройками приложения.
     private lateinit var pref               : SharedPreferences
 

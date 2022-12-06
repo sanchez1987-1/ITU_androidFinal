@@ -28,42 +28,35 @@
         tools:targetApi="31"
         android:usesCleartextTraffic="true">
         <activity
-            android:name=".CActivityObjectInfo"
+            android:name=".activity.CActivityObjectInfo"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
-            android:name=".TicketsListActivity"
+            android:name=".activity.CActivityTicketsList"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
-            android:name=".UserProfileActivity"
+            android:name=".activity.CActivityTicketsInfo"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
-            android:name=".NewsItemActivity"
+            android:name=".activity.CActivityUserProfile"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
-            android:name=".NewsListActivity"
-            android:exported="false">
-            <meta-data
-                android:name="android.app.lib_name"
-                android:value="" />
-        </activity>
-        <activity
-            android:name=".LoginActivity"
+            android:name=".activity.CActivityLogin"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -76,14 +69,14 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".MainActivity"
+            android:name=".activity.MainActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
-            android:name=".CActivityList"
+            android:name=".activity.CActivityList"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"

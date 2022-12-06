@@ -1,9 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    android:orientation="vertical"
+    tools:context=".activity.MainActivity">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="137dp"
+        android:layout_marginTop="60dp"
+        android:fontFamily="sans-serif-black"
+        android:text="@string/intro_text"
+        android:textAlignment="center"
+        android:textSize="34sp" />
+
+    <Button
+        android:id="@+id/go_news"
+        android:layout_width="match_parent"
+        android:layout_height="83dp"
+        android:text="@string/but_news" />
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="22dp" />
+
+    <Button
+        android:id="@+id/go_tickets"
+        android:layout_width="match_parent"
+        android:layout_height="84dp"
+        android:text="@string/but_tickets" />
+</LinearLayout>

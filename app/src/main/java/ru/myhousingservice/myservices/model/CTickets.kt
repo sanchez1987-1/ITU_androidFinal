@@ -34,16 +34,16 @@ class CTickets(
     ) //Название поля в таблице из БД
     var description                         : String
     = "",
-//    @ColumnInfo(
-//        name                                = "date_tickets"
-//    ) //Название поля в таблице из БД
-//    var date_tickets                         : String
-//    = "",
-//    @ColumnInfo(
-//        name                                = "status"
-//    ) //Название поля в таблице из БД
-//    var status                         : Int
-//    = 0
+    @ColumnInfo(
+        name                                = "date_tickets"
+    ) //Название поля в таблице из БД
+    var date_tickets                         : String
+    = "",
+    @ColumnInfo(
+        name                                = "status"
+    ) //Название поля в таблице из БД
+    var status                         : Int
+    = 0
 )
 {
     /****************************************************************************************************

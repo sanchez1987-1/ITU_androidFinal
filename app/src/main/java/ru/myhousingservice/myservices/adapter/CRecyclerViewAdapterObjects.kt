@@ -53,9 +53,9 @@ class CRecyclerViewAdapterObjects
                 onItemClickListener(item)
             }
             //Обработка клика на кнопку с корзиной
-            binding.buttonRemove.setOnClickListener {
-                onItemRemoveListener(item)
-            }
+//            binding.buttonRemove.setOnClickListener {
+//                onItemRemoveListener(item)
+//            }
         }
 
         /************************************************************************************************

@@ -1,4 +1,4 @@
-package ru.myhousingservice.myservices
+package ru.myhousingservice.myservices.activity
 
 import android.Manifest
 import android.content.Intent
@@ -9,11 +9,15 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
+import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.core.content.ContextCompat
+import ru.myhousingservice.myservices.R
+import ru.myhousingservice.myservices.databinding.ActivityMainBinding
+import ru.myhousingservice.myservices.databinding.ActivityTicketsListBinding
 import ru.myhousingservice.myservices.databinding.ActivityUserProfileBinding
 
-class UserProfileActivity : AppCompatActivity() {
+class CActivityUserProfile : AppCompatActivity() {
     private lateinit var resultLauncherPermission
             : ActivityResultLauncher<Array<String>>
 
@@ -24,7 +28,12 @@ class UserProfileActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        binding                             = ActivityUserProfileBinding.inflate(layoutInflater)
         setContentView(R.layout.activity_user_profile)
+
+        binding.logout.setOnClickListener {
+            doLogout()
+        }
     }
     /****************************************************************************************************
      * Проверка наличия и запрос необходимых разрешений.                                                *
@@ -50,32 +59,7 @@ class UserProfileActivity : AppCompatActivity() {
                 permissionsToAsk.toTypedArray()
             )
     }
-    /****************************************************************************************************
-     * Привязка файла с описанием структуры меню к данной активности при создании активности.           *
-     ***************************************************************************************************/
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        val inflater: MenuInflater = menuInflater
-        inflater.inflate(R.menu.menu_activity_list, menu)
-        return true
-    }
-    /****************************************************************************************************
-     * Обработка нажатия на элементы меню.                                                              *
-     ***************************************************************************************************/
-    override fun onOptionsItemSelected(
-        item                                : MenuItem
-    )                                       : Boolean
-    {
-        return when (item.itemId) {
-            R.id.miLogout -> {
-                doLogout()
-                true
-            }
-            else -> super.onOptionsItemSelected(item)
-        }
-    }
-    /****************************************************************************************************
-     * Обработка нажатия кнопки "Выход из учётной записи" в меню.                                       *
-     ***************************************************************************************************/
+
     private fun doLogout()
     {
         //Сохраняем в файл с настройками приложения факт отсутствия учётной записи.
@@ -86,7 +70,37 @@ class UserProfileActivity : AppCompatActivity() {
         //Закрываем данную активность.
         finish()
         //Опционально можем вызвать активность ввода учётных данных.
-        val intent                  = Intent(this, LoginActivity::class.java)
+        val intent                  = Intent(this, CActivityLogin::class.java)
         startActivity(intent)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        val inflater = menuInflater
+        inflater.inflate(R.menu.main_menu, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        binding = ActivityUserProfileBinding.inflate(this.layoutInflater)
+
+        when (item.itemId) {
+            R.id.home -> {
+                val intent = Intent(this, MainActivity::class.java)
+                startActivity(intent)
+            }
+            R.id.profile -> {
+                val intent = Intent(this, CActivityUserProfile::class.java)
+                startActivity(intent)
+            }
+            R.id.news -> {
+                val intent = Intent(this, CActivityList::class.java)
+                startActivity(intent)
+            }
+            R.id.tickets -> {
+                val intent = Intent(this, CActivityTicketsList::class.java)
+                startActivity(intent)
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 }

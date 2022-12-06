@@ -1,7 +1,6 @@
-package ru.myhousingservice.myservices
+package ru.myhousingservice.myservices.activity
 
 import android.Manifest
-import android.app.Activity
 import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
@@ -9,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
@@ -19,21 +19,23 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.coroutines.launch
-import ru.myhousingservice.myservices.adapter.CRecyclerViewAdapterObjects
-import ru.myhousingservice.myservices.databinding.ActivityNewsListBinding
-import ru.myhousingservice.myservices.viewmodels.CViewModelActivityList
-import ru.myhousingservice.myservices.viewmodels.CViewModelFactory
+import ru.myhousingservice.myservices.CApplication
+import ru.myhousingservice.myservices.R
+import ru.myhousingservice.myservices.adapter.CRecyclerViewAdapterTickets
+import ru.myhousingservice.myservices.databinding.ActivityTicketsListBinding
+import ru.myhousingservice.myservices.viewmodels.CViewModelTicketsFactory
+import ru.myhousingservice.myservices.viewmodels.CViewModelTicketsList
 
 /********************************************************************************************************
  * Активность с отображением списка объектов на карте.                                                  *
  *******************************************************************************************************/
-class NewsListActivity                         : AppCompatActivity()
+class CActivityTicketsList                         : AppCompatActivity()
 {
     private lateinit var resultLauncherPermission
             : ActivityResultLauncher<Array<String>>
 
     //Объект класса, содержащий сылки на управляющие графические элементы интерфейса пользователя.
-    private lateinit var binding            : ActivityNewsListBinding
+    private lateinit var binding            : ActivityTicketsListBinding
 
     private var test = 0
 
@@ -41,8 +43,8 @@ class NewsListActivity                         : AppCompatActivity()
     private lateinit var pref               : SharedPreferences
 
     //Получение ссылки на экземляр класса CViewModelActivityList
-    private val viewModel                   : CViewModelActivityList by viewModels {
-        CViewModelFactory((application as CApplication).repositoryObjects)
+    private val viewModel                   : CViewModelTicketsList by viewModels {
+        CViewModelTicketsFactory((application as CApplication).repositoryTicket)
     }
 
     /****************************************************************************************************
@@ -51,7 +53,7 @@ class NewsListActivity                         : AppCompatActivity()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         //Связываем код актиности с файлом, описывающим внешний вид активности.
-        binding                             = ActivityNewsListBinding.inflate(layoutInflater)
+        binding                             = ActivityTicketsListBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         //Получаем ссылку на объект настроек, ассоциируем его с файлом.
@@ -70,18 +72,18 @@ class NewsListActivity                         : AppCompatActivity()
                 //Получаем информацию из потока списков объектов.
                 viewModel.allObjects.collect { newItems ->
                     //Передаём очереной актуализированный список объектов в адаптер для отображения.
-                    (binding.rvObjects.adapter as CRecyclerViewAdapterObjects?)?.submitList(newItems)
+                    (binding.rvObjects.adapter as CRecyclerViewAdapterTickets?)?.submitList(newItems)
                 }
             }
         }
         //Способ расположения элементов - списком
         binding.rvObjects.layoutManager     = LinearLayoutManager(this)
         //Управление отображаемыми элементами - наш класс-адаптер.
-        binding.rvObjects.adapter           = CRecyclerViewAdapterObjects(
+        binding.rvObjects.adapter           = CRecyclerViewAdapterTickets(
             //Обработчик клика по элементу.
             { item ->
                 //Вызов активности с информацией по объекту, передача туда идентификатора.
-                val intent                  = Intent(this, CActivityObjectInfo::class.java)
+                val intent                  = Intent(this, CActivityTicketsInfo::class.java)
                 intent.putExtra(getString(R.string.KEY_OBJECT_ID), item.id.toString())
                 startActivity(intent)
             },
@@ -97,7 +99,7 @@ class NewsListActivity                         : AppCompatActivity()
          ***********************************************************************************************/
         binding.fab.setOnClickListener {
             //Вызов активности с информацией по объекту, передача туда параметров.
-            val intent                      = Intent(this, CActivityObjectInfo::class.java)
+            val intent                      = Intent(this, CActivityTicketsInfo::class.java)
             startActivity(intent)
         }
 
@@ -122,10 +124,26 @@ class NewsListActivity                         : AppCompatActivity()
                     test = 2
                 }
             }
+        //Вызываем обновление объектов с сервера.
+        viewModel.getObjectsFromServer()
+        /************************************************************************************************
+         * Обработка изменений статуса загрузки данных с сервера.                                       *
+         ***********************************************************************************************/
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.status.collect { newStatus ->
+                    if (newStatus.isEmpty())
+                        return@collect //Пропускаем пустой начальный статус
+                    //Показываем статусное сообщение.
+                    Toast.makeText(
+                        this@CActivityTicketsList,
+                        newStatus,
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
+        }
         checkAndRequestPermissions()
-
-
-
     }
     /****************************************************************************************************
      * Проверка наличия и запрос необходимых разрешений.                                                *
@@ -159,19 +177,23 @@ class NewsListActivity                         : AppCompatActivity()
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        binding = ActivityNewsListBinding.inflate(this.layoutInflater)
+        binding = ActivityTicketsListBinding.inflate(this.layoutInflater)
 
         when (item.itemId) {
+            R.id.home -> {
+                val intent = Intent(this, MainActivity::class.java)
+                startActivity(intent)
+            }
             R.id.profile -> {
-                val intent = Intent(this, UserProfileActivity::class.java)
+                val intent = Intent(this, CActivityUserProfile::class.java)
                 startActivity(intent)
             }
             R.id.news -> {
-                val intent = Intent(this, NewsListActivity::class.java)
+                val intent = Intent(this, CActivityList::class.java)
                 startActivity(intent)
             }
             R.id.tickets -> {
-                val intent = Intent(this, TicketsListActivity::class.java)
+                val intent = Intent(this, CActivityTicketsList::class.java)
                 startActivity(intent)
             }
         }

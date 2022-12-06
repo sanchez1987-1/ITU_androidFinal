@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".UserProfileActivity">
+    tools:context=".activity.CActivityUserProfile">
 
     <LinearLayout
         android:layout_width="350dp"
@@ -28,7 +28,7 @@
             android:layout_width="match_parent"
             android:layout_height="200dp"
             android:background="@color/teal_200"
-            android:contentDescription="Аватарка"
+            android:contentDescription="@string/avatar"
             tools:srcCompat="@tools:sample/avatars" />
 
         <Space
@@ -42,6 +42,7 @@
             android:ems="10"
             android:inputType="textPersonName"
             tools:layout_editor_absoluteX="100dp"
+            android:hint="@string/name"
             tools:layout_editor_absoluteY="259dp" />
 
         <EditText
@@ -50,6 +51,7 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:inputType="phone"
+            android:hint="@string/phone"
             tools:layout_editor_absoluteX="100dp"
             tools:layout_editor_absoluteY="442dp" />
 
@@ -59,6 +61,7 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:inputType="textEmailAddress"
+            android:hint="@string/email"
             tools:layout_editor_absoluteX="100dp"
             tools:layout_editor_absoluteY="323dp" />
 
@@ -68,33 +71,38 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:inputType="textPostalAddress"
+            android:hint="@string/address"
             tools:layout_editor_absoluteX="100dp"
             tools:layout_editor_absoluteY="381dp" />
 
         <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
             android:orientation="horizontal">
 
             <Button
-                android:id="@+id/back"
-                android:layout_width="134dp"
+                android:id="@+id/save"
+                android:layout_width="match_parent"
                 android:layout_height="46dp"
-                android:text="Назад"
-                tools:layout_editor_absoluteX="16dp"
+                android:text="@string/save"
+                app:icon="@android:drawable/ic_menu_save"
+                tools:layout_editor_absoluteX="262dp"
                 tools:layout_editor_absoluteY="517dp" />
 
-            <Space
-                android:layout_width="214dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
 
             <Button
-                android:id="@+id/save"
-                android:layout_width="133dp"
+                android:id="@+id/logout"
+                android:layout_width="match_parent"
                 android:layout_height="46dp"
-                android:text="Сохранить"
-                tools:layout_editor_absoluteX="262dp"
+                android:text="@string/Logout"
+                app:icon="@drawable/ic_baseline_logout_24"
+                tools:layout_editor_absoluteX="16dp"
                 tools:layout_editor_absoluteY="517dp" />
         </LinearLayout>
 

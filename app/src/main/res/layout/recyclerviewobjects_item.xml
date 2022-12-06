@@ -26,13 +26,6 @@
                 android:text=""
                 android:layout_weight="1"
                 />
-            <Button
-                style="@style/Widget.Material3.Button.IconButton"
-                android:id="@+id/buttonRemove"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:icon="@drawable/ic_baseline_delete_24"
-                />
         </LinearLayout>
         <TextView
             android:id="@+id/textViewDescription"

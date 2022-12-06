@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import ru.myhousingservice.myservices.databinding.ActivityTicketsListItemBinding
 import ru.myhousingservice.myservices.databinding.RecyclerviewobjectsItemBinding
 import ru.myhousingservice.myservices.model.CTickets
 
@@ -40,7 +41,7 @@ class CRecyclerViewAdapterTickets
      * @param onItemRemoveListener - обработчик кликов на кнопку "удалить" элемента списка.             *
      ***************************************************************************************************/
         (
-        private val binding                 : RecyclerviewobjectsItemBinding,
+        private val binding                 : ActivityTicketsListItemBinding,
         private val onItemClickListener     : (CTickets) -> Unit,
         private val onItemRemoveListener    : (CTickets) -> Unit
     )                                       : RecyclerView.ViewHolder(binding.root)
@@ -77,7 +78,7 @@ class CRecyclerViewAdapterTickets
      * @param parent - ссылка на родительский элемент - RecyclerView.                                   *
      ***************************************************************************************************/
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CTicketsHolderObject {
-        val binding                         = RecyclerviewobjectsItemBinding.inflate(
+        val binding                         = ActivityTicketsListItemBinding.inflate(
             LayoutInflater.from(parent.context),parent,false)
         return CTicketsHolderObject(
             binding,

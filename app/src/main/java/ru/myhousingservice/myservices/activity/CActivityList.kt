@@ -1,4 +1,4 @@
-package ru.myhousingservice.myservices
+package ru.myhousingservice.myservices.activity
 
 import android.Manifest
 import android.content.Intent
@@ -7,7 +7,6 @@ import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
-import android.view.MenuInflater
 import android.view.MenuItem
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
@@ -20,6 +19,8 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.coroutines.launch
+import ru.myhousingservice.myservices.CApplication
+import ru.myhousingservice.myservices.R
 import ru.myhousingservice.myservices.adapter.CRecyclerViewAdapterObjects
 import ru.myhousingservice.myservices.databinding.ActivityListBinding
 import ru.myhousingservice.myservices.viewmodels.CViewModelActivityList
@@ -92,15 +93,15 @@ class CActivityList                         : AppCompatActivity()
             }
         )
 
-
-        /************************************************************************************************
-         * Обработка клика на плавующую кнопку.                                                         *
-         ***********************************************************************************************/
-        binding.fab.setOnClickListener {
-            //Вызов активности с информацией по объекту, передача туда параметров.
-            val intent                      = Intent(this, CActivityObjectInfo::class.java)
-            startActivity(intent)
-        }
+//
+//        /************************************************************************************************
+//         * Обработка клика на плавующую кнопку.                                                         *
+//         ***********************************************************************************************/
+//        binding.fab.setOnClickListener {
+//            //Вызов активности с информацией по объекту, передача туда параметров.
+//            val intent                      = Intent(this, CActivityObjectInfo::class.java)
+//            startActivity(intent)
+//        }
 
         // Register the permissions callback, which handles the user's response to the
         // system permissions dialog. Save the return value, an instance of
@@ -168,43 +169,34 @@ class CActivityList                         : AppCompatActivity()
                 permissionsToAsk.toTypedArray()
             )
     }
-    /****************************************************************************************************
-     * Привязка файла с описанием структуры меню к данной активности при создании активности.           *
-     ***************************************************************************************************/
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        val inflater: MenuInflater          = menuInflater
-        inflater.inflate(R.menu.menu_activity_list, menu)
-        return true
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        val inflater = menuInflater
+        inflater.inflate(R.menu.main_menu, menu)
+        return super.onCreateOptionsMenu(menu)
     }
-    /****************************************************************************************************
-     * Обработка нажатия на элементы меню.                                                              *
-     ***************************************************************************************************/
-    override fun onOptionsItemSelected(
-        item                                : MenuItem
-    )                                       : Boolean
-    {
-        return when (item.itemId) {
-            R.id.miLogout -> {
-                doLogout()
-                true
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        binding = ActivityListBinding.inflate(this.layoutInflater)
+
+        when (item.itemId) {
+            R.id.home -> {
+                val intent = Intent(this, MainActivity::class.java)
+                startActivity(intent)
             }
-            else -> super.onOptionsItemSelected(item)
+            R.id.profile -> {
+                val intent = Intent(this, CActivityUserProfile::class.java)
+                startActivity(intent)
+            }
+            R.id.news -> {
+                val intent = Intent(this, CActivityList::class.java)
+                startActivity(intent)
+            }
+            R.id.tickets -> {
+                val intent = Intent(this, CActivityTicketsList::class.java)
+                startActivity(intent)
+            }
         }
-    }
-    /****************************************************************************************************
-     * Обработка нажатия кнопки "Выход из учётной записи" в меню.                                       *
-     ***************************************************************************************************/
-    private fun doLogout()
-    {
-        //Сохраняем в файл с настройками приложения факт отсутствия учётной записи.
-        with (pref.edit()) {
-            putString(getString(R.string.KEY_USER_NAME), "")
-            apply()
-        }
-        //Закрываем данную активность.
-        finish()
-        //Опционально можем вызвать активность ввода учётных данных.
-        val intent                  = Intent(this, LoginActivity::class.java)
-        startActivity(intent)
+        return super.onOptionsItemSelected(item)
     }
 }

@@ -14,7 +14,7 @@ interface IDAOTickets {
     /****************************************************************************************************
      * Получение списка всех элементов.                                                                 *
      ***************************************************************************************************/
-    @Query("SELECT * FROM objects")
+    @Query("SELECT * FROM tickets")
     fun getAllFlow()                        : Flow<List<CTickets>>
 
     /****************************************************************************************************
@@ -22,12 +22,12 @@ interface IDAOTickets {
      * @param id - идентификатор элемента для поиска.                                                   *
      * @return объект с идентификатором id или пустой поток в случае отсутствия.                        *
      ***************************************************************************************************/
-    @Query("SELECT * FROM objects WHERE id=:id")
+    @Query("SELECT * FROM tickets WHERE id=:id")
     fun getByIdFlow(
         id                                  : UUID
     )                                       : Flow<CTickets>
 
-    @Query("SELECT * FROM objects WHERE id=:id")
+    @Query("SELECT * FROM tickets WHERE id=:id")
     fun getById(
         id                                  : UUID
     )                                       : CTickets?

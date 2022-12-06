@@ -1,4 +1,4 @@
-package ru.myhousingservice.myservices
+package ru.myhousingservice.myservices.activity
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -6,22 +6,24 @@ import androidx.activity.OnBackPressedCallback
 import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.launch
+import ru.myhousingservice.myservices.CApplication
+import ru.myhousingservice.myservices.R
 import ru.myhousingservice.myservices.databinding.ActivityObjectInfoBinding
-import ru.myhousingservice.myservices.viewmodels.CViewModelFactory
-import ru.myhousingservice.myservices.viewmodels.CViewModelObjectInfo
+import ru.myhousingservice.myservices.viewmodels.CViewModelTicketsFactory
+import ru.myhousingservice.myservices.viewmodels.CViewModelTicketsInfo
 import java.util.*
 
 /********************************************************************************************************
  * Активность с отображением информации по одному объекту.                                              *
  *******************************************************************************************************/
-class CActivityObjectInfo                   : AppCompatActivity()
+class CActivityTicketsInfo                   : AppCompatActivity()
 {
     //Объект с сылками на элементы графического интерфейса пользователя.
     private lateinit var binding            : ActivityObjectInfoBinding
 
     //Получение ссылки на экземляр класса CViewModelObjectInfo
-    private val viewModel                   : CViewModelObjectInfo by viewModels {
-        CViewModelFactory((application as CApplication).repositoryObjects)
+    private val viewModel                   : CViewModelTicketsInfo by viewModels {
+        CViewModelTicketsFactory((application as CApplication).repositoryTicket)
     }
 
     /****************************************************************************************************

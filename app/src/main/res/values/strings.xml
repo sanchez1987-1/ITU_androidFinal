@@ -11,4 +11,12 @@
     <string name="log_in">log in</string>
     <string name="Logout">Logout</string>
     <string name="KEY_OBJECT_ID" translatable="false">KEY_OBJECT_ID</string>
+    <string name="phone">Phone</string>
+    <string name="address">Address</string>
+    <string name="email">E-mail</string>
+    <string name="avatar">Аватарка</string>
+    <string name="save">Сохранить</string>
+    <string name="intro_text">Главная страница приложения</string>
+    <string name="but_news">Новости</string>
+    <string name="but_tickets">Заявки</string>
 </resources>

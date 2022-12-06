@@ -1,11 +1,11 @@
-package ru.myhousingservice.myservices
+package ru.myhousingservice.myservices.activity
 
-import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import ru.myhousingservice.myservices.R
 import ru.myhousingservice.myservices.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
@@ -14,6 +14,15 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(this.layoutInflater)
+        binding.goNews.setOnClickListener {
+            val intent = Intent(this, CActivityList::class.java)
+            startActivity(intent)
+        }
+        binding.goTickets.setOnClickListener {
+            val intent = Intent(this, CActivityTicketsList::class.java)
+            startActivity(intent)
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -26,16 +35,20 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(this.layoutInflater)
 
         when (item.itemId) {
+            R.id.home -> {
+                val intent = Intent(this, MainActivity::class.java)
+                startActivity(intent)
+            }
             R.id.profile -> {
-                val intent = Intent(this, UserProfileActivity::class.java)
+                val intent = Intent(this, CActivityUserProfile::class.java)
                 startActivity(intent)
             }
             R.id.news -> {
-                val intent = Intent(this, NewsListActivity::class.java)
+                val intent = Intent(this, CActivityList::class.java)
                 startActivity(intent)
             }
             R.id.tickets -> {
-                val intent = Intent(this, TicketsListActivity::class.java)
+                val intent = Intent(this, CActivityTicketsList::class.java)
                 startActivity(intent)
             }
         }
